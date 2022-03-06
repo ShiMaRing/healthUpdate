@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xgs.healthupdate.dao.UserDao">
+  <update id="updateUser" parameterType="User">
+    update health.User
+    set username=#{username},
+        password=#{password},
+        status=#{status}
+    where invitation = #{invitation}
+  </update>
+
+  <select id="selectById" resultType="User" parameterType="java.lang.String">
+    select *
+    from User
+    where username = #{username}
+  </select>
+
+  <select id="selectByInvitation" resultType="User" parameterType="java.lang.String">
+    select *
+    from User
+    where invitation = #{invitation}
+  </select>
+
+  <select id="selectByUser" resultType="User" parameterType="User">
+    select *
+    from User
+    where username = #{username}
+      and password = #{password}
+  </select>
+
+  <select id="selectAllUser" resultType="User">
+    select *
+    from User;
+  </select>
+
+</mapper>

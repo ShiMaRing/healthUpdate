@@ -1,0 +1,14 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://101.43.161.75:3306/health?severTimezone=Asia/Shanghai&characterEncodeing=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: xgs
+      password: xgs1150840779
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.xgs.healthupdate.pojo

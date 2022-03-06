@@ -1,0 +1,147 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    每日健康上报
+  </title>
+  <link rel="icon" href="image/logo.jpg" sizes="32x32">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .el-form {
+      position: absolute;
+      background-color: ghostwhite;
+      margin-top: 140px;
+      right: 40%;
+      padding-right: 60px;
+      padding-top: 20px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      opacity: 0.8;
+      border-radius: 4px;
+      transition: all 0.5s;
+    }
+    .el-form:hover{
+      box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.8);
+      opacity: 0.8;
+      border-radius: 10px;
+    }
+
+    .el-container {
+      height: 100%;
+      width: 100%;
+    }
+    #bg{
+      height: 100%;
+      width: 100%;
+      float: left;
+      background: url(image/c1_bg.jpg) no-repeat center 0;
+      background-size: cover;
+      filter: blur(5px);
+      transition: all 0.5s;
+    }
+    #bg:hover{
+      filter: blur(0px);
+    }
+
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <el-container class="b">
+    <div id="bg"></div>
+
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+             class="demo-ruleForm">
+      <el-form-item label="账号" prop="username">
+        <el-input v-model="ruleForm.username" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="邀请码" prop="invitation">
+        <el-input v-model="ruleForm.invitation" placeholder="每日自动上报需要邀请码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="oneday()">今日健康上报</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="everyday()">每日自动上报</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="danger" @click="canceleveryday()">取消自动上报</el-button>
+      </el-form-item>
+    </el-form>
+
+  </el-container>
+
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="js/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        ruleForm: {
+          username: '',
+          password: '',
+          invitation: '',
+          status: false
+        },
+        rules: {
+          username: [
+            {required: true, message: "请输入学号", trigger: 'blur'},
+          ],
+          password: [
+            {required: true, message: "请输入密码", trigger: 'blur'},
+          ]
+        }
+      };
+    },
+    methods: {
+      oneday(formdata) {
+        formdata = this.ruleForm;
+        axios.post("/healthUpdate/oneday", formdata).then((res) => {
+          if (res.data.flag) {
+            this.$message.success(res.data.message);
+          } else {
+            this.$message.error(res.data.message);
+          }
+
+        })
+      },
+      everyday() {
+        formdata = this.ruleForm;
+        axios.post("/healthUpdate/everyday", formdata).then((res) => {
+          if (res.data.flag) {
+
+            this.$message.success(res.data.message);
+          } else {
+            this.$message.error(res.data.message);
+          }
+
+        })
+      },
+      canceleveryday() {
+        formdata = this.ruleForm;
+        axios.post("/healthUpdate/canceleveryday", formdata).then((res) => {
+          if (res.data.flag) {
+            this.$message.success(res.data.message);
+          } else {
+            this.$message.error(res.data.message);
+          }
+        })
+      },
+    }
+  })
+</script>
+</html>
