@@ -23,12 +23,13 @@ public class UpdateController {
   @RequestMapping(value = "/oneday", method = RequestMethod.POST)
   public Result oneday(@RequestBody User user) {
     Result result = new Result();
-    String name;
+    String name = "";
     try {
       name = healthUpdate.longin(user.getUsername(), user.getPassword());
     } catch (HttpProcessException e) {
       //出现异常，说明登陆失败
-      name = "fail";
+
+      e.printStackTrace();
     }
     if ("fail".equals(name)) {
       result.setFlag(false);
@@ -116,6 +117,11 @@ public class UpdateController {
   public Result canceleveryday(@RequestBody User user) {
     //先检查数据库有没有，
     Result result = new Result();
+    if ("".equals(user.getUsername()) || user.getUsername() == null) {
+      result.setFlag(false);
+      result.setMessage("数据不合法");
+      return result;
+    }
     User resultUser = userDao.selectByUser(user);
     if (resultUser == null) {
       result.setFlag(false);

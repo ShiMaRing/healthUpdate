@@ -27,6 +27,7 @@ public class HealthUpdate {
 
   //获取用户名
   public String getName() {
+
     String url = "https://e-report.neu.edu.cn/notes/create";
     String s = null;
     try {
