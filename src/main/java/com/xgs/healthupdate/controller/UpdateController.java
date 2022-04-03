@@ -28,7 +28,6 @@ public class UpdateController {
       name = healthUpdate.longin(user.getUsername(), user.getPassword());
     } catch (HttpProcessException e) {
       //出现异常，说明登陆失败
-
       e.printStackTrace();
     }
     if ("fail".equals(name)) {
@@ -40,6 +39,7 @@ public class UpdateController {
       //执行健康上报
       try {
         healthUpdate.healthUpdate();
+        healthUpdate.clear();//清除cookie
       } catch (HttpProcessException e) {
         result.setFlag(false);
         result.setMessage("上报失败，未知错误");
@@ -60,6 +60,8 @@ public class UpdateController {
     String loginResult = "";
     try {
       loginResult = healthUpdate.longin(user.getUsername(), user.getPassword());
+      healthUpdate.clear();
+
     } catch (HttpProcessException e) {
       result.setFlag(false);
       result.setMessage("账号密码错误");
@@ -98,7 +100,9 @@ public class UpdateController {
           user.setStatus(true);
           userDao.updateUser(user);
           try {
+            healthUpdate.longin(user.getUsername(),user.getPassword());
             healthUpdate.healthUpdate();
+            healthUpdate.clear();
           } catch (HttpProcessException e) {
             result.setFlag(false);
             result.setMessage("上报失败，未知错误");

@@ -33,6 +33,7 @@ public class AutoUpdateJob  {
         try {
           healthUpdate.longin(user.getUsername(),user.getPassword());
           healthUpdate.healthUpdate();
+          healthUpdate.clear();
         } catch (HttpProcessException e) {
           e.printStackTrace();
         }

@@ -1,4 +1,6 @@
 package com.xgs.healthupdate.common;
+
+
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpHeader;
@@ -45,6 +47,8 @@ public class HealthUpdate {
     String text = navbarDropdown.text();
     String[] split = text.split("：");
     String name = split[1];//获取姓名
+
+
     return name;
   }
 
@@ -71,6 +75,8 @@ public class HealthUpdate {
     Elements elements = document.getElementsByAttributeValue("name", "execution");
     String exeValue = elements.attr("value");
     String lt = ltElement.attr("value");
+
+    //登陆的时候直接进去了
 
     Map<String, Object> map = new HashMap<>();
     map.put("rsa", username + password + lt);
@@ -99,8 +105,10 @@ public class HealthUpdate {
     HttpResult tp = HttpClientUtil.sendAndGetResp(config.url(location).method(HttpMethods.GET));
     HttpClientUtil.get(config.url(mainPage));
 
+
     if (flag) {
-      return getName();
+      String name=getName();
+      return name;
     } else {
       return "fail";
     }
@@ -138,12 +146,14 @@ public class HealthUpdate {
     String dest = "https://e-report.neu.edu.cn/api/notes";
     HttpResult httpResult = HttpClientUtil.sendAndGetResp(
         config.url(dest).map(formMap).method(HttpMethods.POST));
-    everyDay();
-
-    cookieStore.clear();//完成上报之后会清空cookie
+    everyDay();//再完成三次上报
 
   }
 
+
+  public  void clear(){
+    cookieStore.clear();
+  }
   //早中晚上报
   //首先进行登陆拿到cookie
 
@@ -157,8 +167,6 @@ public class HealthUpdate {
     String token = element.attr("content");//拿到token
 
     System.out.println(token);
-
-
     Map<String, Object> map = new HashMap<>();
     /*_token: BXHD3gW0KlecI1OuNgWTFkCPywMRU5YbWDopulgg
        temperature: 36.5
