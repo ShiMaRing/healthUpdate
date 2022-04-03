@@ -69,17 +69,8 @@ public class HealthUpdate {
     Document document = Jsoup.parse(html);
     Element ltElement = document.getElementById("lt");
     Elements elements = document.getElementsByAttributeValue("name", "execution");
-
-    if(ltElement==null||elements==null){
-      //说明已经登陆完成了，不需要再登陆了
-      return getName();
-    }
-
     String exeValue = elements.attr("value");
     String lt = ltElement.attr("value");
-
-
-
 
     Map<String, Object> map = new HashMap<>();
     map.put("rsa", username + password + lt);
@@ -118,6 +109,7 @@ public class HealthUpdate {
 
 
   public void healthUpdate() throws HttpProcessException {
+
     String url = "https://e-report.neu.edu.cn/notes/create";
     String s = HttpClientUtil.get(config.url(url));
     Document document = Jsoup.parse(s);
@@ -147,6 +139,9 @@ public class HealthUpdate {
     HttpResult httpResult = HttpClientUtil.sendAndGetResp(
         config.url(dest).map(formMap).method(HttpMethods.POST));
     everyDay();
+
+    cookieStore.clear();//完成上报之后会清空cookie
+
   }
 
   //早中晚上报
