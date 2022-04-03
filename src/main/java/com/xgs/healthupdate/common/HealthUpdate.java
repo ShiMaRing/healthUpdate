@@ -1,6 +1,4 @@
 package com.xgs.healthupdate.common;
-
-
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpHeader;
@@ -71,8 +69,17 @@ public class HealthUpdate {
     Document document = Jsoup.parse(html);
     Element ltElement = document.getElementById("lt");
     Elements elements = document.getElementsByAttributeValue("name", "execution");
+
+    if(ltElement==null||elements==null){
+      //说明已经登陆完成了，不需要再登陆了
+      return getName();
+    }
+
     String exeValue = elements.attr("value");
     String lt = ltElement.attr("value");
+
+
+
 
     Map<String, Object> map = new HashMap<>();
     map.put("rsa", username + password + lt);
@@ -153,6 +160,9 @@ public class HealthUpdate {
     Element element = elements.get(0);
 
     String token = element.attr("content");//拿到token
+
+    System.out.println(token);
+
 
     Map<String, Object> map = new HashMap<>();
     /*_token: BXHD3gW0KlecI1OuNgWTFkCPywMRU5YbWDopulgg
