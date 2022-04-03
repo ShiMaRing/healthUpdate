@@ -26,6 +26,7 @@ public class UpdateController {
     String name = "";
     try {
       name = healthUpdate.longin(user.getUsername(), user.getPassword());
+      System.out.println("name :" +name);
     } catch (HttpProcessException e) {
       //出现异常，说明登陆失败
       e.printStackTrace();

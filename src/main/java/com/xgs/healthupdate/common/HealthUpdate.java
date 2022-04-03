@@ -47,8 +47,6 @@ public class HealthUpdate {
     String text = navbarDropdown.text();
     String[] split = text.split("：");
     String name = split[1];//获取姓名
-
-
     return name;
   }
 
@@ -90,11 +88,16 @@ public class HealthUpdate {
     HttpResult httpResult = HttpClientUtil.sendAndGetResp(config.map(map).method(HttpMethods.POST));
     int status = httpResult.getStatusCode();
 
+    System.out.println("status:  " + status);
+
     if (status == 302) {
       flag = true;
+    } else {
+      return "fail";
     }
 
     String location = "";
+
     for (Header respHeader : httpResult.getRespHeaders()) {
       if (respHeader.getName().equals("Location")) {
         location = respHeader.getValue();
@@ -105,14 +108,7 @@ public class HealthUpdate {
     HttpResult tp = HttpClientUtil.sendAndGetResp(config.url(location).method(HttpMethods.GET));
     HttpClientUtil.get(config.url(mainPage));
 
-
-    if (flag) {
-      String name=getName();
-      return name;
-    } else {
-      return "fail";
-    }
-
+    return getName();
   }
 
 
@@ -151,7 +147,7 @@ public class HealthUpdate {
   }
 
 
-  public  void clear(){
+  public void clear() {
     cookieStore.clear();
   }
   //早中晚上报
@@ -177,7 +173,7 @@ public class HealthUpdate {
     map.put("suspicious_respiratory_symptoms", 0);
     map.put("symptom_descriptions", "");
     config.map(map);
-    for (int i = 1; i <=3; i++) {
+    for (int i = 1; i <= 3; i++) {
       String ul = "https://e-report.neu.edu.cn/inspection/items/" + i + "/records";//每一个url
       HttpClientUtil.post(config.url(ul));
     }
