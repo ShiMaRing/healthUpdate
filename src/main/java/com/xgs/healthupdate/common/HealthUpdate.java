@@ -24,6 +24,8 @@ public class HealthUpdate {
 
   String userId;
   HttpConfig config;
+  HttpClientContext context = new HttpClientContext();
+  CookieStore cookieStore = new BasicCookieStore();
 
   //获取用户名
   public String getName() {
@@ -57,8 +59,7 @@ public class HealthUpdate {
     String mainPage = "https://portal.neu.edu.cn/tp_up/view?m=up";
 
     //设置上下文用来保存cookie
-    HttpClientContext context = new HttpClientContext();
-    CookieStore cookieStore = new BasicCookieStore();
+
     context.setCookieStore(cookieStore);
     //设置保存cookie，请求登陆页面获取lt值,设置请求头
     config = HttpConfig.custom().url(url).context(context);
