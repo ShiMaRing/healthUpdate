@@ -142,7 +142,7 @@ public class HealthUpdate {
     String dest = "https://e-report.neu.edu.cn/api/notes";
     HttpResult httpResult = HttpClientUtil.sendAndGetResp(
         config.url(dest).map(formMap).method(HttpMethods.POST));
-    everyDay();//再完成三次上报
+
 
   }
 
@@ -153,7 +153,7 @@ public class HealthUpdate {
   //早中晚上报
   //首先进行登陆拿到cookie
 
-  public void everyDay() throws HttpProcessException {
+  public void everyDay(int i) throws HttpProcessException {
     String url = "https://e-report.neu.edu.cn/inspection/items";//获取url
     String s = HttpClientUtil.get(config.url(url));//获取响应
     Document document = Jsoup.parse(s);
@@ -173,10 +173,12 @@ public class HealthUpdate {
     map.put("suspicious_respiratory_symptoms", 0);
     map.put("symptom_descriptions", "");
     config.map(map);
-    for (int i = 1; i <= 3; i++) {
-      String ul = "https://e-report.neu.edu.cn/inspection/items/" + i + "/records";//每一个url
-      HttpClientUtil.post(config.url(ul));
-    }
+
+    //1到3对应早中晚
+
+    String ul = "https://e-report.neu.edu.cn/inspection/items/" + i + "/records";//每一个url
+    HttpClientUtil.post(config.url(ul));
+
 
   }
 
